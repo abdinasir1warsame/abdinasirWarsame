@@ -4,25 +4,31 @@ body {
   padding: 0;
   background-color: #f0f0f0;
 }
-
-.container {
+.wiki-container,
+.country-code-container,
+.time-zone-container {
   max-width: 800px;
   margin: 50px auto;
 }
-
-.search-container {
+.wiki-search-container,
+.country-code-search-container,
+.time-zone-search-container {
   display: flex;
   margin-bottom: 20px;
 }
-
-#search-input {
+#search-input,
+#country-code-lat,
+#country-code-lon,
+#timezone-lat,
+#timezone-lon {
   flex: 1;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px 0 0 5px;
 }
-
-#search-button {
+#search-button,
+#country-code-search-button,
+#timezone-search-button {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 0 5px 5px 0;
@@ -43,12 +49,12 @@ body {
   color: white;
   padding: 20px;
 }
-
-.card-body {
+.wiki-card-body,
+.country-code-card-body,
+.time-zone-card-body {
   padding: 20px;
 }
 
 h2 {
   margin: 0;
 }
-

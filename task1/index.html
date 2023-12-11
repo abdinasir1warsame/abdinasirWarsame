@@ -9,20 +9,61 @@
     <title>Document</title>
   </head>
   <body>
-    <div class="container">
-      <div class="search-container">
+    <div class="wiki-container">
+      wikipedia
+      <div class="wiki-search-container">
         <input type="text" id="search-input" placeholder="Enter city name" />
         <button id="search-button">Search</button>
       </div>
       <div class="card">
         <div class="card-header">
-          <h2></h2>
+          <h2>Wikipedia Api</h2>
         </div>
-        <div class="card-body"></div>
+        <div class="wiki-card-body">
+          <h1 id="wiki-title"></h1>
+          <img id="picture" src="" alt="" />
+          <h1 id="wiki-summary"></h1>
+        </div>
+      </div>
+    </div>
+    <div class="country-code-container">
+      country code
+      <div class="country-code-search-container">
+        <input type="number" id="country-code-lat" placeholder="Lattitude" />
+        <input type="number" id="country-code-lon" placeholder="longitude" />
+        <button id="country-code-search-button">Search</button>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2>Country Code Api</h2>
+        </div>
+        <div class="country-code-card-body">
+          <h1 id="country-name"></h1>
+          <h1 id="country-code"></h1>
+          <h1 id="country-languages"></h1>
+        </div>
+      </div>
+    </div>
+    <div class="time-zone-container">
+      timezone
+      <div class="time-zone-search-container">
+        <input type="number" id="timezone-lat" placeholder="Lattitude" />
+        <input type="number" id="timezone-lon" placeholder="longitude" />
+        <button id="timezone-search-button">Search</button>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2>Time-Zone Api</h2>
+        </div>
+        <div class="time-zone-card-body">
+          <h1 id="country"></h1>
+          <h1 id="continent"></h1>
+          <h1 id="time"></h1>
+        </div>
       </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="./libs/javascript/index.js"></script>
+    <script src="./libs/javascript/javascript.js"></script>
   </body>
 </html>
