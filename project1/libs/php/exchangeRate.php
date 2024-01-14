@@ -1,31 +1,34 @@
 <?php
 
-	ini_set('display_errors', 'On');
-	error_reporting(E_ALL);
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
 
-	$executionStartTime = microtime(true);
+$executionStartTime = microtime(true);
 
-	$url='https://openexchangerates.org/api/latest.json?app_id=e0d7e92489eb4f02b4a9d57b88edb000';
 
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL,$url);
+$exchangeUrl='https://openexchangerates.org/api/latest.json?app_id=d73aae50608846b284d85a23aaa77040';
 
-	$result=curl_exec($ch);
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_URL, $exchangeUrl);
 
-	curl_close($ch);
+$exchangeData = curl_exec($ch);
+curl_close($ch);
 
-	$decode = json_decode($result,true);	
+if (!$exchangeData) {
+    echo json_encode(['error' => 'Failed to retrieve data']);
+    exit;
+}
 
-	$output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
-	$output['status']['description'] = "success";
-	$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-	$output['data'] = $decode;
-	
-	header('Content-Type: application/json; charset=UTF-8');
+$exchangeDecode = json_decode($exchangeData, true);
 
-	echo json_encode($output); 
+$exchangeOutput['status']['code'] = "200";
+$exchangeOutput['status']['name'] = "ok";
+$exchangeOutput['status']['description'] = "success";
+$exchangeOutput['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+$exchangeOutput['data'] = $exchangeDecode;
+
+echo json_encode($exchangeOutput);
 
 ?>

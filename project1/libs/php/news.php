@@ -14,9 +14,7 @@ if (!isset($_REQUEST['isoCode']) || empty($_REQUEST['isoCode'])) {
 // Sanitize and encode the input
 $isoCode = urlencode($_REQUEST['isoCode']);
 
-
-$url = 'https://restcountries.com/v3.1/alpha/' . $isoCode;
-
+$url = 'https://newsapi.org/v2/top-headlines?country=' . $isoCode . '&apiKey=f7104effcb7b402ab87a8a7d596f174d';
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -25,22 +23,23 @@ curl_setopt($ch, CURLOPT_URL, $url);
 // Add User-Agent header
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('User-Agent: MyPersonalProject/1.0'));
 
-$restData = curl_exec($ch);
+$newsData = curl_exec($ch);
 curl_close($ch);
 
-if (!$restData) {
+if (!$newsData) {
     echo json_encode(['error' => 'Failed to retrieve data']);
     exit;
 }
 
-$restDecode = json_decode($restData, true);
+$newsDecode = json_decode($newsData, true);
 
-$restOutput['status']['code'] = "200";
-$restOutput['status']['name'] = "ok";
-$restOutput['status']['description'] = "success";
-$restOutput['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-$restOutput['data'] = $restDecode;
+$newsOutput['status']['code'] = "200";
+$newsOutput['status']['name'] = "ok";
+$newsOutput['status']['description'] = "success";
+$newsOutput['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+$newsOutput['data'] = $newsDecode;
 
-echo json_encode($restOutput);
+echo json_encode($newsOutput);
 
 ?>
+

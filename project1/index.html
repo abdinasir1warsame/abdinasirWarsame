@@ -1,375 +1,427 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Geo-Radar Gazetteer</title>
-    <meta name="author" content="Graham Thomas">
-    <meta name="description" content="Geographic Map with AJAX, PHP and API">
+    <meta name="author" content="Graham Thomas" />
+    <meta name="description" content="Geographic Map with AJAX, PHP and API" />
 
     <script src="./libs/js/jquery-3.6.1.min.js"></script>
-    
-   
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
-     integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
-     crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
-     integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
-     crossorigin=""></script>
-     <script src="libs/easy-button/easy-button.js"></script>
-   
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link rel="stylesheet" href="libs/CSS/style.css">
-  
-    <script src="https://kit.fontawesome.com/6e03bdd5f0.js" crossorigin="anonymous"></script>
 
-</head>
-<body>
-    <header>
-        <div class="container-fluid">
-            <div class="row" id="headCol">
-              <div class="col" id="title">
-                 <h1 class="p-1">Geo-Radar | <span>Gazetteer</span></h1>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
+      integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+      integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+      crossorigin=""
+    ></script>
+    <script src="libs/easy-button/easy-button.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.0/MarkerCluster.Default.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.0/leaflet.markercluster.js"></script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="libs/CSS/style.css" />
+
+    <script
+      src="https://kit.fontawesome.com/6e03bdd5f0.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <main>
+      <span id="selectContainer">
+        <select
+          name="country"
+          class="form-control-sm m-2"
+          id="country"
+        ></select>
+      </span>
+
+      <div id="geoMap"></div>
+      <!-- modal 1 general country info modal -->
+      <div
+        class="modal fade"
+        id="countryInfoModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="countryInfoModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title modalTitle" id="Modal1Title"></h5>
+
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <img id="countryFlag" alt="Flag" />
+              <br />
+              <table class="table table-striped">
+                <tbody class="countryInfo">
+                  <tr>
+                    <th scope="row">Country Name</th>
+                    <td id="countryInfoName"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Capital City</th>
+                    <td id="countryInfoCapital"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Population</th>
+                    <td id="countryInfoPopulation"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Area (KM²)</th>
+                    <td id="countryInfoArea"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Language</th>
+                    <td id="countryInfoLanguage"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Timezone</th>
+                    <td id="countryInfoTimezone"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn close"
+                id="footer-btn"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- modal 2 weather modal -->
+      <div
+        class="modal fade"
+        id="weatherInfoModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="weatherModalTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <!-- Added modal-lg class here -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="weather-modal-title">
+                Today's Weather
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="weather-header">
+                <div id="current-weather" class="current-weather">
+                  <h2 id="weather-city" class="current-weather__city">
+                    London
+                  </h2>
+                  <img
+                    class="current-weather__icon"
+                    id="weatherIcon"
+                    src=""
+                    alt="Weather Icon"
+                  />
+
+                  <div
+                    class="current-weather__condition"
+                    id="weatherDescription"
+                  ></div>
+
+                  <div
+                    id="weatherDescription"
+                    class="weather-description"
+                  ></div>
+                </div>
+                <div class="weather-stats">
+                  <div class="weather-stats__item">
+                    <i class="wi wi-thermometer weather-stats__icon"></i>
+                    <h3 class="weather-stats__title">Temp</h3>
+                    <span class="weather-stats_value" id="temp"></span>
+                  </div>
+                  <div class="weather-stats__item">
+                    <i class="wi wi-strong-wind weather-stats__icon"></i>
+                    <h3 class="weather-stats__title">Wind Speed</h3>
+                    <span class="weather-stats_value" id="windspeed"></span>
+                  </div>
+                  <div class="weather-stats__item">
+                    <i class="wi wi-humidity weather-stats__icon"></i>
+                    <h3 class="weather-stats__title">Humidity</h3>
+                    <span class="weather-stats_value" id="humidity"></span>
+                  </div>
+
+                  <div class="weather-stats__item">
+                    <i class="wi wi-hot weather-stats__icon"></i>
+                    <h3 class="weather-stats__title">UV Index</h3>
+                    <span class="weather-stats_value" id="uvi"></span>
+                  </div>
+                </div>
               </div>
             </div>
-        </div>		
-    </header>
-
-    <main>
-        <div class="col">
-            <label for="country" id="c-label">Select a Country:</label>
-            <select name="country" class="form-control-sm m-2" id="country"></select> 
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn close"
+                id="footer-btn"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
+      <!-- modal 3 wiki modal -->
+      <div
+        class="modal fade"
+        id="wikiInfoModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="countryInfoModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="wikiTitle">[title]'s Wiki Info</h5>
 
-        <div id="geoMap"></div>
-<!-- Modal 1 - Weather -->
-        
-			<div class="modal fade" id="countryInfoModal" tabindex="-1" role="dialog" aria-labelledby="countryInfoModalCenterTitle" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered" role="document">
-					<div class="modal-content">
-						
-						<div class="modal-header">
-							<h5 class="modal-title modalTitle" id="Modal1Title"></h5>
-							
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-					
-						<div class="modal-body">
-							
-							<img id="countryFlag" alt="Flag">
-							<br>
-							<table class="table table-striped">
-								<thead>
-									<tr>
-										<th scope="col" colspan="2">Country Information</th>
-								  	</tr>
-								</thead>
-
-								<tbody class="countryInfo">
-									<tr>
-										<th scope="row">Country Name</th>
-										<td id="countryInfoName"></td>
-									</tr>
-									<tr>
-										<th scope="row">Capital City</th>
-										<td id="countryInfoCapital"></td>
-									</tr>
-									<tr>
-										<th scope="row">Population</th>
-										<td id="countryInfoPopulation"></td>
-									</tr>
-									<tr>
-										<th scope="row">Area (KM²)</th>
-										<td id="countryInfoArea"></td>
-									</tr>
-									<tr>
-										<th scope="row">Language</th>
-										<td id="countryInfoLanguage"></td>
-									</tr>
-                                    <tr>
-										<th scope="row">Timezone</th>
-										<td id="countryInfoTimezone"></td>
-									</tr>
-								</tbody>
-							</table>
-                        </div>
-                        
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
-                    </div>
-
-                    </div>
-                </div>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-        
 
-<!-- Modal 2 - Weather -->
-            
-			<div class="modal fade" id="currencyInfoModal" tabindex="-1" role="dialog" aria-labelledby="currencyInfoModalCenterTitle" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered" role="document">
-					<div class="modal-content">
-						
-						<div class="modal-header">
-							<h5 class="modal-title modalTitle" id="Modal2Title"></h5>
-							
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-					
-						<div class="modal-body">
-							
-							<table class="table table-striped">
-								<thead>
-									<tr>
-										<th scope="col" colspan="2">Currency Information</th>
-								  	</tr>
-								</thead>
+            <div class="modal-body">
+              <img id="wiki-image" alt="Flag" />
+              <br />
+              <p id="summary"></p>
+              <table class="table table-striped">
+                <tbody class="countryInfo">
+                  <tr>
+                    <th scope="row">Continent</th>
+                    <td id="continent"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Region</th>
+                    <td id="region"></td>
+                  </tr>
 
-								<tbody class="currencyInfo">
-									<tr>
-										<th scope="row">Currency Code</th>
-										<td id="currencyInfoCurrencyCode"></td>
-									</tr>
-									<tr>
-										<th scope="row">Currency Name</th>
-										<td id="currencyInfoCurrencyName"></td>
-									</tr>
-									<tr>
-										<th scope="row">Current Exchange Rate</th>
-										<td id="currencyInfoExchange"></td>
-									</tr>
-									<tr>
-										<th scope="row">Top Level Domain (www)</th>
-										<td id="currencyInfoTLD"></td>
-									</tr>
-									<tr>
-										<th scope="row">Calling Code</th>
-										<td id="currencyInfoCalling"></td>
-									</tr>
-								</tbody>
-							</table>
-                        </div>
-                        
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
-                        </div>
-
-                    </div>
-                </div>
+                  <tr>
+                    <th scope="row">Population</th>
+                    <td id="population"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Currency</th>
+                    <td id="currency"></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-        
 
-
-            <!-- Modal 3 - Weather -->
-			<div class="modal fade" id="weatherModal" tabindex="-1" role="dialog" aria-labelledby="weatherModalCenterTitle" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered" role="document">
-					<div class="modal-content">
-						
-						<div class="modal-header">
-							<h5 class="modal-title modalTitle" id="Modal3Title"></h5>
-							
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-					
-						<div class="modal-body">
-							
-                            <table class="table table-striped">
-								<thead>
-									<tr>
-										<th scope="col" colspan="4" class="weatherHead">Current</th>
-								  	</tr>
-								</thead>
-
-								<tbody class="weatherTable">
-									<tr>
-										<td><i class="fas fa-temperature-high"></i></td>
-										<th scope="row">Temperature </th>
-										<td id="currentTemp"></td>
-										<td rowspan="3" class="weatherbground"><img id="currentIcon" class="weatherIcon" alt="Current Weather Icon"></td>
-									</tr>
-									<tr>
-										<td><i class="far fa-sun"></i></td>
-										<th scope="row">Feels Like </th>
-										<td id="currentFeelsLike"></td>
-									</tr>
-									<tr>
-										<td><i class="fas fa-wind"></i></td>
-										<th scope="row">Conditions</th>
-										<td id="currentConditions"></td>
-									</tr>
-								</tbody>
-							</table>
-
-							<table class="table table-striped">
-								<thead>
-									<tr>
-										<th scope="col" colspan="4" class="weatherHead">Tomorrow</th>
-								  	</tr>
-								</thead>
-
-								<tbody class="weatherTable">
-									<tr>
-										<td><i class="fas fa-temperature-high"></i></td>
-										<th scope="row">Temperature </th>
-										<td id="tomorrowTemp"></td>
-										<td rowspan="3" class="weatherbground"><img id="tomorrowIcon" class="weatherIcon" alt="Tomorrow Weather Icon"></td>
-									</tr>
-									<tr>
-										<td><i class="far fa-sun"></i></td>
-										<th scope="row">Feels Like </th>
-										<td id="tomorrowFeelsLike"></td>
-									</tr>
-									<tr>
-										<td><i class="fas fa-wind"></i></td>
-										<th scope="row">Conditions</th>
-										<td id="tomorrowConditions"></td>
-									</tr>
-								</tbody>
-							</table>
-
-							<table class="table table-striped">
-								<thead>
-									<tr>
-										<th scope="col" colspan="4" class="weatherHead" id="2DayName"></th>
-								  	</tr>
-								</thead>
-
-								<tbody class="weatherTable">
-									<tr>
-										<td><i class="fas fa-temperature-high"></i></td>
-										<th scope="row">Temperature </th>
-										<td id="2dayTemp"></td>
-										<td rowspan="3" class="weatherbground"><img id="2dayIcon" class="weatherIcon" alt="2 Days Weather Icon"></td>
-									</tr>
-									<tr>
-										<td><i class="far fa-sun"></i></td>
-										<th scope="row">Feels Like </th>
-										<td id="2dayFeelsLike"></td>
-									</tr>
-									<tr>
-										<td><i class="fas fa-wind"></i></td>
-										<th scope="row">Conditions</th>
-										<td id="2dayConditions"></td>
-									</tr>
-								</tbody>
-							</table>
-
-						</div>
-											
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
-						</div>
-				    </div>
-				</div>
-			</div>
-
-
-            <!-- Modal 4 - News -->
-			<div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="newsModalCenterTitle" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered" role="document">
-					<div class="modal-content">
-						
-						<div class="modal-header">
-							<h5 class="modal-title modalTitle" id="Modal4Title"></h5>
-							
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-					
-						<div class="modal-body">
-							
-							<table class="table">
-								<thead>
-									<tr>
-										<th scope="col" colspan="4">Top Breaking Story</th>
-									</tr>
-								</thead>
-
-								<tbody class="newsTable">
-									<tr>
-										<td rowspan="3" colspan="2">
-											<a id="article1Link" target="_blank"> 
-												<img id="article1Img" class="newsImage" alt="News Article 1 Image">
-											</a>
-										</td>
-									</tr>
-									<tr>
-										<td id="article1Title" class="newsTitle" colspan="2"></td>
-									</tr>
-									<tr>
-										<td id="article1Source" colspan="2"></td>
-									</tr>
-
-								</tbody>
-							</table>
-
-							<table class="table">
-								<thead>
-									<tr>
-										<th scope="col" colspan="4">Additional Headlines</th>
-									</tr>
-								</thead>
-
-								<tbody class="newsTable">
-									<tr>
-										<td rowspan="3" colspan="2">
-											<a id="article2Link" target="_blank"> 
-												<img id="article2Img" class="newsImage" alt="News Article 2 Image">
-											</a>
-										</td>
-									</tr>
-									<tr>
-										<td id="article2Title" class="newsTitle" colspan="2"></td>
-									</tr>
-									<tr>
-										<td id="article2Source" colspan="2"></td>
-									</tr>
-
-									<tr>
-										<td rowspan="3" colspan="2">
-											<a id="article3Link" target="_blank"> 
-												<img id="article3Img" class="newsImage" alt="News Article 3 Image">
-											</a>
-										</td>
-									</tr>
-									<tr>
-										<td id="article3Title" class="newsTitle" colspan="2"></td>
-									</tr>
-									<tr>
-										<td id="article3Source" colspan="2"></td>
-									</tr>
-
-								</tbody>
-							</table>
-							
-						</div>
-											
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
-						</div>
-					</div>
-				</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn close"
+                id="footer-btn"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
             </div>
-        
-
-
+          </div>
         </div>
+      </div>
+      <!-- modal 4 news modal -->
+      <div
+        class="modal fade"
+        id="newsInfoModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="newsModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title" id="newsModalLabel">
+                Top News Stories In United Kingdom
+              </h1>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="news-modal-body">
+              <div class="row">
+                <!-- Single Column for Articles -->
+                <h1 class="article-title">Latest News</h1>
+                <div id="articles-column" class="col-md-12">
+                  <h3>Article One</h3>
+                  <div id="article-one" class="news-article"></div>
 
+                  <h3>Article Two</h3>
+                  <div id="article-two" class="news-article"></div>
+
+                  <h3>Article Three</h3>
+                  <div id="article-three" class="news-article"></div>
+
+                  <h3>Article Four</h3>
+                  <div id="article-four" class="news-article"></div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn close"
+                id="footer-btn"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- modal 5 currency modal -->
+      <div
+        class="modal fade"
+        id="currencyExchangeModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="currenExchangeModalTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <!-- Added modal-lg class here -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exchangeModalTitle">
+                Currency Exchange
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="currencyExchangeForm">
+                <div class="form-group exchange-inputs">
+                  <label id="from-label" for="fromCurrency">From USD</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="fromCurrency"
+                    value="1"
+                    itemid="usd"
+                  />
+                </div>
+                <div class="form-group">
+                  <label id="convert-to" for="toCurrency">Convert to GBP</label>
+                  <select class="form-control" id="toCurrency">
+                    <option id="current-currency" selected>GBP</option>
+                    <!-- Add other currencies as options here -->
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label id="result-currency" for="resultCurrency"
+                    >Result</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="resultCurrency"
+                    value="1"
+                    readonly
+                  />
+                </div>
+                <div class="exchange-btn-container">
+                  <button type="button" class="exchange-btn" id="exchange-btn">
+                    EXCHANGE
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn close"
+                id="footer-btn"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
 
-
     <!-- Bootstrap links -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
 
-<script src="./libs/js/index.js"></script>
-
-</body>
+    <script src="./libs/js/index.js"></script>
+  </body>
 </html>

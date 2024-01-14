@@ -1,31 +1,42 @@
 <?php
 
-	ini_set('display_errors', 'On');
-	error_reporting(E_ALL);
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
 
-	$executionStartTime = microtime(true);
+$executionStartTime = microtime(true);
 
-	$url='https://api.openweathermap.org/data/2.5/onecall?lat=' . $_REQUEST['lat'] . '&lon=' . $_REQUEST['lng'] . '&appid=b12576978ee89d5afb176d845464f39b';
+// Check if 'lat' and 'lng' are set in the request
+if (!isset($_REQUEST['lat']) || empty($_REQUEST['lat']) || !isset($_REQUEST['lng']) || empty($_REQUEST['lng'])) {
+    echo json_encode(['error' => 'No Lat & long provided']);
+    exit;
+}
 
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL,$url);
+// Sanitize and encode the input
+$lat = urlencode($_REQUEST['lat']);
+$lng = urlencode($_REQUEST['lng']);
 
-	$result=curl_exec($ch);
+$weatherUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat=' . $lat . '&lon=' . $lng . '&appid=b12576978ee89d5afb176d845464f39b';
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_URL, $weatherUrl);
 
-	curl_close($ch);
+$weatherData = curl_exec($ch);
+curl_close($ch);
 
-	$decode = json_decode($result,true);	
+if (!$weatherData) {
+    echo json_encode(['error' => 'Failed to retrieve data']);
+    exit;
+}
 
-	$output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
-	$output['status']['description'] = "success";
-	$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-	$output['data'] = $decode;
-	
-	header('Content-Type: application/json; charset=UTF-8');
+$weatherDecode = json_decode($weatherData, true);
 
-	echo json_encode($output); 
+$weatherOutput['status']['code'] = "200";
+$weatherOutput['status']['name'] = "ok";
+$weatherOutput['status']['description'] = "success";
+$weatherOutput['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+$weatherOutput['data'] = $weatherDecode;
+
+echo json_encode($weatherOutput);
 
 ?>
