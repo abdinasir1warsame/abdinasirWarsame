@@ -7,7 +7,7 @@ $executionStartTime = microtime(true);
 
 $geonamesUsername = 'abdinasir1993';
 $isoCode = urlencode($_REQUEST['isoCode']);
-$airpUrl = "http://api.geonames.org/searchJSON?formatted=true&maxRows=100&lang=es&username=" . $geonamesUsername . "&style=full&country=" . $isoCode . "&featureCode=AIRP";
+$airpUrl = "http://api.geonames.org/searchJSON?formatted=true&maxRows=10&lang=es&username=" . $geonamesUsername . "&style=full&country=" . $isoCode . "&featureCode=AIRP";
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

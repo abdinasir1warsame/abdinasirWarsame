@@ -7,7 +7,7 @@ $executionStartTime = microtime(true);
 
 $geonamesUsername = 'abdinasir1993';
 $isoCode = urlencode($_REQUEST['isoCode']);
-$citiesUrl = "http://api.geonames.org/searchJSON?country=" . $isoCode . "&maxRows=100&username=" . $geonamesUsername;
+$citiesUrl = "http://api.geonames.org/searchJSON?country=" . $isoCode . "&maxRows=10&username=" . $geonamesUsername;
 
 $ch = curl_init(); // Initialize cURL session
 

@@ -693,7 +693,6 @@ L.easyButton({
       stateName: 'unchecked',
       title: 'Show Country Information',
       onClick: function (btn, map) {
-        // Show the modal
         $('#currencyExchangeModal')
           .modal('show')
           .on('shown.bs.modal', function () {
@@ -711,13 +710,11 @@ L.easyButton({
 
             const performCurrencyConversion = () => {
               const rateValue = Object.values(specificRate)[0];
-
               const fromCurrencyValue = parseFloat($('#fromCurrency').val());
 
               if (!isNaN(fromCurrencyValue)) {
                 // Perform the multiplication
                 const exchangedRate = rateValue * fromCurrencyValue;
-
                 $('#resultCurrency').val(exchangedRate.toFixed(2));
               } else {
                 console.error('Invalid input value');
@@ -725,7 +722,13 @@ L.easyButton({
               }
             };
 
-            $('#exchange-btn').click(performCurrencyConversion);
+            // Bind the conversion function to the input's change event
+            $('#fromCurrency').on('input', performCurrencyConversion);
+          })
+          .on('hidden.bs.modal', function () {
+            // Reset the fromCurrency value to 1 when the modal is closed
+            $('#fromCurrency').val(1);
+            $('#resultCurrency').val('');
           });
 
         // Event listener for closing the modal
@@ -744,6 +747,7 @@ L.easyButton({
     },
   ],
 }).addTo(map);
+
 // wiki modal
 L.easyButton({
   position: 'topleft',
