@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Geo-Radar Gazetteer</title>
+    <title>Gazetteer</title>
     <meta name="author" content="Graham Thomas" />
     <meta name="description" content="Geographic Map with AJAX, PHP and API" />
 
@@ -33,16 +33,34 @@
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="libs/vendors/favicon_io/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="libs/vendors/favicon_io/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="libs/vendors/favicon_io/favicon.ico"
+    />
 
     <link rel="stylesheet" href="libs/CSS/style.css" />
-
-    <script
-      src="https://kit.fontawesome.com/6e03bdd5f0.js"
-      crossorigin="anonymous"
-    ></script>
   </head>
   <body>
     <main>
+      <div id="preloader">
+        <img
+          src="./libs/images/globe-preloader.gif"
+          alt="Loading..."
+          class="loader-image"
+        />
+      </div>
       <span id="selectContainer">
         <select
           name="country"
@@ -147,50 +165,44 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
+
             <div class="modal-body">
               <div class="weather-header">
                 <div id="current-weather" class="current-weather">
-                  <h2 id="weather-city" class="current-weather__city">
-                    London
-                  </h2>
+                  <div class="icon-temp">
+                    <h2 id="weather-city" class="current-weather__city">
+                      London
+                    </h2>
+                    <div id="temp" class="current-temp"></div>
+                  </div>
+
                   <img
                     class="current-weather__icon"
                     id="weatherIcon"
                     src=""
                     alt="Weather Icon"
                   />
-
                   <div
                     class="current-weather__condition"
                     id="weatherDescription"
                   ></div>
-
-                  <div
-                    id="weatherDescription"
-                    class="weather-description"
-                  ></div>
                 </div>
-                <div class="weather-stats">
-                  <div class="weather-stats__item">
-                    <i class="wi wi-thermometer weather-stats__icon"></i>
-                    <h3 class="weather-stats__title">Temp</h3>
-                    <span class="weather-stats_value" id="temp"></span>
-                  </div>
-                  <div class="weather-stats__item">
-                    <i class="wi wi-strong-wind weather-stats__icon"></i>
-                    <h3 class="weather-stats__title">Wind Speed</h3>
-                    <span class="weather-stats_value" id="windspeed"></span>
-                  </div>
-                  <div class="weather-stats__item">
-                    <i class="wi wi-humidity weather-stats__icon"></i>
-                    <h3 class="weather-stats__title">Humidity</h3>
-                    <span class="weather-stats_value" id="humidity"></span>
-                  </div>
-
-                  <div class="weather-stats__item">
-                    <i class="wi wi-hot weather-stats__icon"></i>
-                    <h3 class="weather-stats__title">UV Index</h3>
-                    <span class="weather-stats_value" id="uvi"></span>
+                <!-- weekly forecast -->
+                <div id="weather-forecast" class="weather-forecast">
+                  <div id="daily-forecast" class="weather-forecast__day">
+                    <div
+                      id="forecast-date"
+                      class="weather-forecast__date"
+                    ></div>
+                    <img
+                      id="forecast-icon"
+                      src=""
+                      alt="Weather Icon"
+                      class="weather-forecast__icon"
+                    />
+                    <div id="forecast-temp" class="weather-forecast__temp">
+                      20C
+                    </div>
                   </div>
                 </div>
               </div>
@@ -369,7 +381,6 @@
                   <label id="convert-to" for="toCurrency">Convert to GBP</label>
                   <select class="form-control" id="toCurrency">
                     <option id="current-currency" selected>GBP</option>
-                    <!-- Add other currencies as options here -->
                   </select>
                 </div>
                 <div class="form-group">

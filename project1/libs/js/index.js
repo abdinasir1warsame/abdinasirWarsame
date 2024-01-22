@@ -6,6 +6,7 @@ var restCountryData = [];
 var airportsInfo = [];
 var newsData = [];
 var weatherData = [];
+var dailyWeather = [];
 var wikiData = [];
 var currenciesData = [];
 var specificRate = [];
@@ -55,24 +56,20 @@ var overlays = {
 var layerControl = L.control.layers(basemaps, overlays).addTo(map);
 
 $(document).ready(() => {
+  $('#preloader').show();
   // Function to populate country names dropdown
   populateCountryDropdown();
   function populateCountryDropdown() {
     $.ajax({
       type: 'GET',
-      url: './libs/php/geoJson.php', // URL to fetch country names
+      url: './libs/php/geoJson.php',
       dataType: 'json',
       success: function (data) {
-        console.log('this is border data returned all together: ', data);
         let listHTML = `<option value="Select..." selected>Select...</option>`;
-        const countryNames = data.data.countryInfo.features.map((feature) => [
-          feature.properties.name,
-          feature.properties.iso_a2,
-        ]);
+        const countryList = data.data.countryList;
 
-        countryNames.sort((a, b) => a[0].localeCompare(b[0]));
-        countryNames.forEach(([name, iso_a2]) => {
-          listHTML += `<option value="${iso_a2}">${name}</option>`;
+        countryList.forEach((country) => {
+          listHTML += `<option value="${country.iso_a2}">${country.name}</option>`;
         });
 
         $('#country').html(listHTML);
@@ -89,10 +86,6 @@ $(document).ready(() => {
       url: './libs/php/geoCountryBorders.php', // URL to fetch country borders
       data: { isoA2: isoA2 },
       success: function (data) {
-        console.log(
-          'the correct country border data has been returned: ',
-          data
-        );
         if (data && data.data && data.data.border) {
           const selectedCountryData = data.data.border;
           if (selectedCountryData) {
@@ -116,7 +109,9 @@ $(document).ready(() => {
 
   // Fetch user's location and set default country
   fetchUserLocationAndSetDefault();
-
+  setTimeout(function () {
+    $('#preloader').fadeOut(); // Use fadeOut for a smooth transition
+  }, 1500);
   $('#country').change(function () {
     const selectedIsoA2 = $(this).val();
     const selectedCountryName = $(this).find('option:selected').text();
@@ -212,10 +207,9 @@ const getGeneralCountryInfo = (countryName) => {
         // Call getNews and getWeather
         getNews(countryInfo.countryCode);
         getRestCountry(countryInfo.countryCode);
-        getWeather(countryInfo.lat, countryInfo.lng);
+
         getAirports(countryInfo.countryCode);
         getCities(countryInfo.countryCode);
-        countryTest();
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {
@@ -223,9 +217,7 @@ const getGeneralCountryInfo = (countryName) => {
     },
   });
 };
-const countryTest = () => {
-  console.log('the country data has been returned succesfully: ', countryInfo);
-};
+
 //function to call rest country api
 const getRestCountry = (isoCode) => {
   $.ajax({
@@ -239,8 +231,10 @@ const getRestCountry = (isoCode) => {
 
       if (resultObj.data && resultObj.data) {
         restCountryData = resultObj.data; // Accessing the first item
-        restCountryTest();
 
+        var capitalLat = restCountryData[0].capitalInfo.latlng[0];
+        var capitalLng = restCountryData[0].capitalInfo.latlng[1];
+        getWeather(capitalLat, capitalLng);
         // Log the currency key
         if (
           Array.isArray(restCountryData) &&
@@ -248,7 +242,7 @@ const getRestCountry = (isoCode) => {
           restCountryData[0].currencies
         ) {
           currencyKey = Object.keys(restCountryData[0].currencies)[0];
-          console.log('Currency Key:', currencyKey);
+
           getCurrencies(currencyKey);
         } else {
           console.log('No currency information available.');
@@ -263,17 +257,18 @@ const getRestCountry = (isoCode) => {
   });
 };
 
-const restCountryTest = () => {
-  console.log('the rest data has been returned succesfully: ', restCountryData);
-};
-
-const airportIcon = L.icon({
-  iconUrl: 'libs/images/airplane.svg',
-  iconSize: [50, 50],
+const airportIcon = L.ExtraMarkers.icon({
+  prefix: 'fa',
+  icon: 'fa-plane',
+  iconColor: 'black',
+  markerColor: 'white',
+  shape: 'square',
 });
-const cityIcon = L.icon({
-  iconUrl: 'libs/images/skyline.svg',
-  iconSize: [50, 50],
+const cityIcon = L.ExtraMarkers.icon({
+  prefix: 'fa',
+  icon: 'fa-city',
+  markerColor: 'green',
+  shape: 'square',
 });
 const getCities = (isoCode) => {
   $.ajax({
@@ -293,13 +288,16 @@ const getCities = (isoCode) => {
           lng: city.lng,
           lat: city.lat,
         };
-        console.log('this is the waited for city info: ', cityDetails);
 
-        // Create a marker and add it to the citiesLayer instead of markers
         var marker = L.marker([cityDetails.lat, cityDetails.lng], {
           title: cityDetails.cityName,
           icon: cityIcon,
+        }).bindTooltip(cityDetails.cityName, {
+          permanent: false,
+          direction: 'top',
+          className: 'city-tooltip',
         });
+
         citiesLayer.addLayer(marker);
       }
     },
@@ -319,7 +317,6 @@ const getAirports = (isoCode) => {
     },
     success: function (result) {
       airportsLayer.clearLayers();
-      airportsInfo = [];
       var resultObj = JSON.parse(result);
       if (
         resultObj.data &&
@@ -334,11 +331,13 @@ const getAirports = (isoCode) => {
             lat: airport.lat,
           };
 
-          airportsInfo.push(airportDetails);
-          console.log('this is the waited for airport: ', airportDetails);
           let marker = L.marker([airportDetails.lat, airportDetails.Lng], {
             title: airportDetails.airportName,
             icon: airportIcon,
+          }).bindTooltip(airportDetails.airportName, {
+            permanent: false,
+            direction: 'top',
+            className: 'airport-tooltip',
           });
 
           airportsLayer.addLayer(marker);
@@ -352,9 +351,7 @@ const getAirports = (isoCode) => {
     },
   });
 };
-const airportTest = () => {
-  console.log('Airport selected details has arrived: ', airportsInfo);
-};
+
 //function to call to news api
 const getNews = (isoCode) => {
   $.ajax({
@@ -385,7 +382,6 @@ const getNews = (isoCode) => {
           };
           newsData.push(articleDetails);
         }
-        newsTest();
       } else {
         console.log('No articles found for this country.');
       }
@@ -395,9 +391,7 @@ const getNews = (isoCode) => {
     },
   });
 };
-const newsTest = () => {
-  console.log('the news data has been returned succesfully: ', newsData);
-};
+
 //function to call to weather api
 const getWeather = (lat, lng) => {
   $.ajax({
@@ -411,8 +405,8 @@ const getWeather = (lat, lng) => {
       var resultObj = JSON.parse(result);
 
       if (resultObj.data && resultObj.data.current) {
-        weatherData = resultObj.data.current; // Accessing the first item
-        weatherTest();
+        weatherData = resultObj.data.current;
+        dailyWeather = resultObj.data.daily;
       } else {
         console.log('No data found in the response');
       }
@@ -422,12 +416,7 @@ const getWeather = (lat, lng) => {
     },
   });
 };
-const weatherTest = () => {
-  console.log(
-    'the weather you are looking for has been returned: ',
-    weatherData
-  );
-};
+
 //function to call to wiki api
 const getWiki = (countryName) => {
   $.ajax({
@@ -446,8 +435,6 @@ const getWiki = (countryName) => {
         resultObj.data.geonames.length > 0
       ) {
         wikiData = resultObj.data.geonames[1];
-
-        wikiTest();
       } else {
         console.log('No data found in the response');
       }
@@ -457,22 +444,19 @@ const getWiki = (countryName) => {
     },
   });
 };
-const wikiTest = () => {
-  console.log('the wiki data has been returned succsesfully: ', wikiData);
-};
+
 // function to get currencies
 const getCurrencies = (currencyKey) => {
   $.ajax({
     url: './libs/php/exchangeRate.php',
     type: 'GET',
-    dataType: 'json', // Automatic JSON parsing
+    dataType: 'json',
 
     success: function (result) {
       if (result && result.data && result.data.rates) {
         const rates = result.data.rates;
         if (rates.hasOwnProperty(currencyKey)) {
           specificRate = { [currencyKey]: rates[currencyKey] };
-          console.log('Matched Currency Data: ', specificRate);
 
           // Process the specific currency rate as needed
         } else {
@@ -521,13 +505,14 @@ L.easyButton({
   id: 'countryBtn',
   states: [
     {
-      icon: 'fa-folder', // Ensure you have the relevant icon class
+      icon: 'fa-folder',
       stateName: 'unchecked',
       title: 'Show Country Information',
       onClick: function (btn, map) {
         // Show the modal
         $('#countryInfoModal')
           .modal('show')
+
           .on('shown.bs.modal', function () {
             document.getElementById('Modal1Title').innerHTML =
               'Information For' + '  ' + restCountryData[0].name.common;
@@ -535,6 +520,8 @@ L.easyButton({
               restCountryData[0].flags.png;
             document.getElementById('countryInfoName').innerHTML =
               restCountryData[0].name.common;
+            document.getElementById('countryInfoArea').innerHTML =
+              restCountryData[0].area.toLocaleString() + ' ' + 'km²';
             document.getElementById('countryInfoCapital').innerHTML =
               restCountryData[0].capital[0];
             document.getElementById('countryInfoLanguage').innerHTML =
@@ -553,10 +540,9 @@ L.easyButton({
       },
     },
     {
-      icon: '&#x238C;', // Ensure you have the relevant icon class
+      icon: '&#x238C;',
       stateName: 'checked',
       onClick: function (btn, map) {
-        // Change button state and possibly hide the modal or perform other actions
         btn.state('unchecked');
         $('#countryInfoModal').modal('hide');
       },
@@ -569,7 +555,7 @@ L.easyButton({
   id: 'WeatherBtn',
   states: [
     {
-      icon: 'fa-sun', // Example icon class
+      icon: 'fa-sun',
       stateName: 'unchecked',
       title: 'Show Weather Information',
       onClick: function (btn, map) {
@@ -583,7 +569,7 @@ L.easyButton({
             let tempCelsius = convertKelvinToCelsius(weatherData.temp);
 
             document.getElementById('weather-modal-title').innerHTML =
-              "Today's Weather For" + ' ' + restCountryData[0].name.common;
+              "Today's Weather For" + ' ' + restCountryData[0].capital;
             let openWeatherIcon = weatherData.weather[0].icon;
             let weatherIconPath = mapIconToSvg(openWeatherIcon);
 
@@ -593,14 +579,41 @@ L.easyButton({
             document.getElementById('weatherDescription').innerHTML =
               weatherData.weather[0].description;
             document.getElementById('weather-city').innerHTML =
-              restCountryData[0].name.common;
-            document.getElementById('humidity').innerHTML =
-              weatherData.humidity + ' %';
+              restCountryData[0].capital;
+
             document.getElementById('temp').innerHTML =
-              tempCelsius.toFixed(2) + ' °C';
-            document.getElementById('uvi').innerHTML = weatherData.uvi;
-            document.getElementById('windspeed').innerHTML =
-              weatherData.wind_speed + ' m/s';
+              Math.round(tempCelsius) + ' °C';
+
+            // Clear previous forecasts
+            document.getElementById('weather-forecast').innerHTML = '';
+
+            dailyWeather.slice(1, 7).forEach((dayWeather) => {
+              let forecastIcon = dayWeather.weather[0].icon;
+              let dailyWeatherIcon = mapIconToSvg(forecastIcon);
+              let tempCel = convertKelvinToCelsius(dayWeather.temp.day);
+
+              let date = new Date(dayWeather.dt * 1000);
+
+              let dayOfWeek = date.toLocaleDateString('en-US', {
+                weekday: 'long',
+              });
+
+              let forecastHTML = `
+      <div class="weather-forecast__day">
+        <div class="weather-forecast__date">${dayOfWeek}</div>
+        <img
+          class="weather-forecast__icon"
+          src="${dailyWeatherIcon}"
+          alt="Weather Icon"
+        />
+        <div class="weather-forecast__temp">${Math.round(tempCel)} °C</div>
+      </div>
+    `;
+
+              // Append the forecast HTML to the container
+              document.getElementById('weather-forecast').innerHTML +=
+                forecastHTML;
+            });
           });
 
         $('.close').click(function () {
@@ -630,14 +643,22 @@ L.easyButton({
       onClick: function (btn, map) {
         // Function to create article HTML
         function createArticleHtml(article) {
+          const date = new Date(article.publishedAt);
+
+          // Format the date
+          const formattedDate = article.publishedAt
+            ? date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })
+            : 'Unknown Date';
           return `
-            <h2 class="news-title">${article.title || 'Article Title'}</h2>
-            <p class="news-summary"><a href="${
-              article.url
-            }" target="_blank">Read more</a></p>
-            <span class="news-date">Published on ${
-              article.publishedAt || 'Unknown Date'
-            }</span>
+          <a href="${article.url}" target="_blank" class="news-article-link">
+              <h2 class="news-title">${article.title || 'Article Title'}</h2>
+              
+              <span class="news-date">Published on ${formattedDate}</span>
+            </a>
           `;
         }
 
@@ -651,7 +672,7 @@ L.easyButton({
           );
           document.querySelector(
             '#articles-column h3:first-child'
-          ).textContent = `Article From: ${newsData[0].author || 'Unknown'}`;
+          ).textContent = ` ${newsData[0].author || 'Unknown'}`;
 
           // Populate article two
           document.getElementById('article-two').innerHTML = createArticleHtml(
@@ -659,14 +680,14 @@ L.easyButton({
           );
           document.querySelector(
             '#articles-column h3:nth-child(3)'
-          ).textContent = `Article From: ${newsData[1].author || 'Unknown'}`;
+          ).textContent = ` ${newsData[1].author || 'Unknown'}`;
 
           // Populate article three
           document.getElementById('article-three').innerHTML =
             createArticleHtml(newsData[2]);
           document.querySelector(
             '#articles-column h3:nth-child(5)'
-          ).textContent = `Article From: ${newsData[2].author || 'Unknown'}`;
+          ).textContent = `${newsData[2].author || 'Unknown'}`;
 
           // Populate article four
           document.getElementById('article-four').innerHTML = createArticleHtml(
@@ -674,7 +695,7 @@ L.easyButton({
           );
           document.querySelector(
             '#articles-column h3:nth-child(7)'
-          ).textContent = `Article From: ${newsData[3].author || 'Unknown'}`;
+          ).textContent = `${newsData[3].author || 'Unknown'}`;
         }
 
         // Show the modal
