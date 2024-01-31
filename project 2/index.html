@@ -194,6 +194,195 @@
         <p class="fw-light my-3">Company Directory version 1.0</p>
       </footer>
     </section>
+    <!-- All Employee Modals  -->
+    <!-- create employee section -->
+    <!-- create New Employee modal -->
+    <div
+      id="createPersonnelModal"
+      class="modal fade"
+      tabindex="-1"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <!--   the last two classes centre the modal and, if the content is too long, ensures  -->
+      <!--   that the header and footer are always on display by making the body scroll -->
+
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-success bg-gradient text-white">
+            <h5 class="modal-title">Create New Employee</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="createPersonnelForm">
+              <input type="hidden" id="createPersonnelEmployeeID" />
+
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="createPersonnelFirstName"
+                  placeholder="First name"
+                  required
+                />
+                <label for="CreatePersonnelFirstName">First name</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="createPersonnelLastName"
+                  placeholder="Last name"
+                  required
+                />
+                <label for="createPersonnelLastName">Last name</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="createPersonnelJobTitle"
+                  placeholder="Job title"
+                  required
+                />
+                <label for="createPersonnelJobTitle">Job Title</label>
+              </div>
+
+              <div class="form-floating mb-3">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="createPersonnelEmailAddress"
+                  placeholder="Email address"
+                  required
+                />
+                <label for="createPersonnelEmailAddress">Email Address</label>
+              </div>
+
+              <div class="form-floating">
+                <select
+                  class="form-select"
+                  id="createPersonnelDepartment"
+                  placeholder="Department"
+                ></select>
+                <label for="createPersonnelDepartment"
+                  >Choose a Department</label
+                >
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="submit"
+              form="createPersonnelForm"
+              class="btn btn-outline-primary btn-sm myBtn"
+            >
+              CREATE
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm myBtn"
+              data-bs-dismiss="modal"
+            >
+              CANCEL
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Confirmation Modal -->
+    <div
+      class="modal fade"
+      id="createConfirmationModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="confirmationModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmationModalLabel">Confirm</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to create this employee?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-dismiss="modal"
+              id="cancelButton"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-success" id="confirmCreate">
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- success modal -->
+    <div
+      class="modal fade"
+      id="EmployeeCreatedModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="successModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">Success</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">The user has been Created successfully.</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              data-dismiss="modal"
+              id="successOkButton"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--update employee section  -->
+    <!-- update modal -->
 
     <div
       id="editPersonnelModal"
@@ -299,6 +488,7 @@
         </div>
       </div>
     </div>
+    <!-- delete employee section  -->
     <!-- delete personnel -->
     <div
       id="deletePersonnelModal"
@@ -450,7 +640,267 @@
         </div>
       </div>
     </div>
+    <!-- success modal -->
+    <div
+      class="modal fade"
+      id="successModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="successModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">Success</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">The user has been deleted successfully.</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-dismiss="modal"
+              id="successOkButton"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- All Department Modals  -->
+    <!-- create Department section -->
+    <!-- create New Department modal -->
+    <div
+      id="createDepartmentModal"
+      class="modal fade"
+      tabindex="-1"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <!--   the last two classes centre the modal and, if the content is too long, ensures  -->
+      <!--   that the header and footer are always on display by making the body scroll -->
 
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-success bg-gradient text-white">
+            <h5 class="modal-title">Create New Department</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="createDepartmentForm">
+              <input type="hidden" id="createPersonnelEmployeeID" />
+
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="createDepartment"
+                  placeholder="First name"
+                  required
+                />
+                <label for="createDepartment">Department Name</label>
+              </div>
+
+              <div class="form-floating">
+                <select
+                  class="form-select"
+                  id="chooseLocation"
+                  placeholder="Department"
+                ></select>
+                <label for="chooseLocation">choose a location</label>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="submit"
+              form="createDepartmentForm"
+              class="btn btn-outline-primary btn-sm myBtn"
+            >
+              CREATE
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm myBtn"
+              data-bs-dismiss="modal"
+            >
+              CANCEL
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Confirmation Modal -->
+    <div
+      class="modal fade"
+      id="createDepartmentConfirmModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="confirmationModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmationModalLabel">Confirm</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div id="modal-body" class="modal-body">
+            Are you sure you want to create this Department?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-dismiss="modal"
+              id="departmentConfButton"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-success" id="confirmCreate">
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- success modal -->
+    <div
+      class="modal fade"
+      id="departmentCreatedModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="successModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">Success</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            The Department has been Created successfully.
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              data-dismiss="modal"
+              id="departmentsuccessBtn"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- update department section -->
+    <div
+      id="editdepartmentModal"
+      class="modal fade"
+      tabindex="-1"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <!--   the last two classes centre the modal and, if the content is too long, ensures  -->
+      <!--   that the header and footer are always on display by making the body scroll -->
+
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-primary bg-gradient text-white">
+            <h5 class="modal-title">Edit Department</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="editPersonnelForm">
+              <input type="hidden" id="editPersonnelEmployeeID" />
+
+              <div class="form-floating mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editDepartmentName"
+                  placeholder="Department name"
+                  required
+                />
+                <label for="editDepartmentName">Department name</label>
+              </div>
+
+              <div class="form-floating">
+                <select
+                  class="form-select"
+                  id="editDepartmentsLocation"
+                  placeholder="Location"
+                ></select>
+                <label for="editDepartmentsLocation">Location</label>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="submit"
+              form="editDepartmentForm"
+              class="btn btn-outline-primary btn-sm myBtn"
+            >
+              SAVE
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm myBtn"
+              data-bs-dismiss="modal"
+            >
+              CANCEL
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="./libs/js/jquery-3.6.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./libs/js/index.js"></script>
