@@ -747,7 +747,6 @@ L.easyButton({
             $('#fromCurrency').on('input', performCurrencyConversion);
           })
           .on('hidden.bs.modal', function () {
-            // Reset the fromCurrency value to 1 when the modal is closed
             $('#fromCurrency').val(1);
             $('#resultCurrency').val('');
           });
