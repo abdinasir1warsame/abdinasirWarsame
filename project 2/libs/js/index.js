@@ -62,7 +62,7 @@ $('#addBtn').click(function () {
         },
       });
     } else {
-      console.log('location ready to be added');
+      $('#createLocationModal').modal('show');
     }
   }
 });
@@ -170,18 +170,17 @@ const showAllLocations = () => {
       if (result.status.code == 200) {
         // Clear the existing table data
         $('#locations-tab-pane .table tbody').empty();
-
-        locations = result;
+        console.log(result);
         // Iterate through the returned data and append it to the table
         $.each(result.data, function (index, location) {
           var row = `
           <tr>
           <td class="align-middle text-nowrap">${location.name}</td>
           <td class="align-middle text-end text-nowrap">
-            <button type="button" class="btn btn-primary btn-sm">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editLocationModal" data-id="${location.id}">
               <i class="fa-solid fa-pencil fa-fw"></i>
             </button>
-            <button type="button" class="btn btn-primary btn-sm">
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteLocationModal" data-id="${location.id}">
               <i class="fa-solid fa-trash fa-fw"></i>
             </button>
           </td>
@@ -301,6 +300,52 @@ $('#createDepartmentForm').on('submit', function (e) {
     $('#departmentCreatedModal').modal('hide');
   });
 });
+// create location function
+$('#createLocationForm').on('submit', function (e) {
+  e.preventDefault();
+  $('#createLocationModal').modal('hide');
+
+  $('#createLocationConfirmModal').modal('show');
+
+  // Prevent the default form submission
+
+  $('#LocationConfButton').on('click', function () {
+    // Collect the form data
+    var formData = {
+      name: $('#locationName').val(),
+
+      // Add other fields as necessary
+    };
+
+    // AJAX call to save form data
+    $.ajax({
+      url: './libs/php/createLocation.php',
+      type: 'POST',
+      data: formData,
+      dataType: 'json',
+      success: function (result) {
+        if (result.status.code == 200) {
+          // Update was successful
+          $('#createLocationConfirmModal').modal('hide');
+          $('#locationCreatedModal').modal('show');
+        } else {
+          // Handle error - You may want to display an error message to the user
+          console.error('Error updating personnel: ' + result.status.message);
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        // Handle AJAX error - You may want to display an error message to the user
+        console.error('AJAX Error: ' + textStatus + ' - ' + errorThrown);
+      },
+    });
+  });
+  $('#locationCreateCancel').on('click', function () {
+    $('#createLocationConfirmModal').modal('hide');
+  });
+  $('#locationSuccessBtn').on('click', function () {
+    $('#locationCreatedModal').modal('hide');
+  });
+});
 // all edit functions
 // edit personnel
 $('#editPersonnelModal').on('show.bs.modal', function (e) {
@@ -351,48 +396,47 @@ $('#editPersonnelModal').on('show.bs.modal', function (e) {
       );
     },
   });
-});
-// Executes when the form button with type="submit" is clicked
+  $('#editPersonnelForm').on('submit', function (e) {
+    // Prevent the default form submission
+    e.preventDefault();
 
-$('#editPersonnelForm').on('submit', function (e) {
-  // Prevent the default form submission
-  e.preventDefault();
+    // Collect the form data
+    var formData = {
+      id: $('#editPersonnelEmployeeID').val(),
+      firstName: $('#editPersonnelFirstName').val(),
+      lastName: $('#editPersonnelLastName').val(),
+      jobTitle: $('#editPersonnelJobTitle').val(),
+      email: $('#editPersonnelEmailAddress').val(),
+      departmentID: $('#editPersonnelDepartment').val(),
+      // Add other fields as necessary
+    };
 
-  // Collect the form data
-  var formData = {
-    id: $('#editPersonnelEmployeeID').val(),
-    firstName: $('#editPersonnelFirstName').val(),
-    lastName: $('#editPersonnelLastName').val(),
-    jobTitle: $('#editPersonnelJobTitle').val(),
-    email: $('#editPersonnelEmailAddress').val(),
-    departmentID: $('#editPersonnelDepartment').val(),
-    // Add other fields as necessary
-  };
+    // AJAX call to save form data
+    $.ajax({
+      url: './libs/php/updatePersonnel.php',
+      type: 'POST',
+      data: formData,
+      dataType: 'json',
+      success: function (result) {
+        if (result.status.code == 200) {
+          // Update was successful
+          console.log('Update Success: ', result);
+          $('#editPersonnelModal').modal('hide');
 
-  // AJAX call to save form data
-  $.ajax({
-    url: './libs/php/updatePersonnel.php',
-    type: 'POST',
-    data: formData,
-    dataType: 'json',
-    success: function (result) {
-      if (result.status.code == 200) {
-        // Update was successful
-        console.log('Update Success: ', result);
-        $('#editPersonnelModal').modal('hide');
-
-        $('#personnelBtn').click();
-      } else {
-        // Handle error - You may want to display an error message to the user
-        console.error('Error updating personnel: ' + result.status.message);
-      }
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      // Handle AJAX error - You may want to display an error message to the user
-      console.error('AJAX Error: ' + textStatus + ' - ' + errorThrown);
-    },
+          $('#personnelBtn').click();
+        } else {
+          // Handle error - You may want to display an error message to the user
+          console.error('Error updating personnel: ' + result.status.message);
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        // Handle AJAX error - You may want to display an error message to the user
+        console.error('AJAX Error: ' + textStatus + ' - ' + errorThrown);
+      },
+    });
   });
 });
+
 // edit departments
 $('#editDepartmentModal').on('show.bs.modal', function (e) {
   $.ajax({
@@ -428,7 +472,7 @@ $('#editDepartmentModal').on('show.bs.modal', function (e) {
 
         // Set the default selected location (assuming locations[0] exists)
         if (result.data.locations.length > 0) {
-          $('#editDepartmentsLocation').val(result.data.locations[0].id);
+          $('#editDepartmentsLocation').val(locationID);
         }
       } else {
         $('#editPersonnelModal .modal-title').replaceWith(
@@ -442,47 +486,118 @@ $('#editDepartmentModal').on('show.bs.modal', function (e) {
       );
     },
   });
-});
-// Executes when the form button with type="submit" is clicked
+  $('#editDepartmentForm').on('submit', function (e) {
+    // Prevent the default form submission
+    e.preventDefault();
+    $('#editDepartmentModal').modal('hide');
+    $('#updateDepartmentConfirmation').modal('show');
+    // Collect the form data
+    var formData = {
+      id: $('#editDepartmentID').val(),
+      name: $('#editDepartmentName').val(),
+      locationID: $('#editDepartmentsLocation').val(),
 
-$('#editDepartmentForm').on('submit', function (e) {
-  // Prevent the default form submission
-  e.preventDefault();
-
-  // Collect the form data
-  var formData = {
-    id: $('#editDepartmentID').val(),
-    name: $('#editDepartmentName').val(),
-    locationID: $('#editDepartmentsLocation').val(),
-
-    // Add other fields as necessary
-  };
-
-  // AJAX call to save form data
-  $.ajax({
-    url: './libs/php/updateDepartment.php',
-    type: 'POST',
-    data: formData,
-    dataType: 'json',
-    success: function (result) {
-      if (result.status.code == 200) {
-        // Update was successful
-        console.log('Update Success: ', result);
-
-        $('#departmentBtn').click();
-      } else {
-        // Handle error - You may want to display an error message to the user
-        console.error('Error updating department: ' + result.status.message);
-      }
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      // Handle AJAX error - You may want to display an error message to the user
-      console.error('AJAX Error: ' + textStatus + ' - ' + errorThrown);
-    },
+      // Add other fields as necessary
+    };
+    // AJAX call to save form data
+    $('#departmentConfirmDelete').on('click', function () {
+      $.ajax({
+        url: './libs/php/updateDepartment.php',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        success: function (result) {
+          if (result.status.code == 200) {
+            // Update was successful
+            $('#updateDepartmentConfirmation').modal('hide');
+            $('#successDepartmentUpdate').modal('show');
+          } else {
+            // Handle error - You may want to display an error message to the user
+            console.error(
+              'Error updating department: ' + result.status.message
+            );
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          // Handle AJAX error - You may want to display an error message to the user
+          console.error('AJAX Error: ' + textStatus + ' - ' + errorThrown);
+        },
+      });
+    });
+    $('#successDepartmentUpdate').on('click', function () {
+      $('#successDepartmentUpdate').modal('hide');
+    });
   });
 });
 
-//create location function
+// edit location
+$('#editLocationModal').on('show.bs.modal', function (e) {
+  $.ajax({
+    url: './libs/php/getLocationById.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: $(e.relatedTarget).attr('data-id'), // Retrieves the data-id attribute from the calling button
+    },
+    success: function (result) {
+      var resultCode = result.status.code;
+
+      if (resultCode == 200) {
+        // Update the hidden input with the employee id so that
+
+        console.log(result);
+        // Access department information
+        $('#editLocationID').val(result.data.id);
+        $('#editLocationName').val(result.data.name);
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      $('#editPersonnelModal .modal-title').replaceWith(
+        'Error retrieving data'
+      );
+    },
+  });
+  $('#editLocationForm').on('submit', function (e) {
+    // Prevent the default form submission
+    e.preventDefault();
+    $('#editLocationModal').modal('hide');
+    $('#updateLocationConfirmation').modal('show');
+    // Collect the form data
+    var formData = {
+      id: $('#editLocationID').val(),
+      name: $('#editLocationName').val(),
+    };
+    // AJAX call to save form data
+    $('#confirmLocationUpdate').on('click', function () {
+      $.ajax({
+        url: './libs/php/updateLocation.php',
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        success: function (result) {
+          if (result.status.code == 200) {
+            // Update was successful
+            $('#updateLocationConfirmation').modal('hide');
+            $('#successLocationUpdate').modal('show');
+          } else {
+            // Handle error - You may want to display an error message to the user
+            console.error(
+              'Error updating department: ' + result.status.message
+            );
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          // Handle AJAX error - You may want to display an error message to the user
+          console.error('AJAX Error: ' + textStatus + ' - ' + errorThrown);
+        },
+      });
+    });
+    $('#successLocationUpdate').on('click', function () {
+      $('#successLocationUpdate').modal('hide');
+    });
+  });
+});
+
 // All delete functions
 // delete employee function
 $('#deletePersonnelModal').on('show.bs.modal', function (e) {
@@ -583,7 +698,7 @@ $('#deleteDepartmentModal').on('show.bs.modal', function (e) {
 
         var locationID = result.data.department.locationID;
         var locationName = result.data.department.locationName;
-        // Clear and populate the dropdown with locations
+
         $('#departmentLocation').html('');
         $('#departmentLocation').append(
           $('<option>', {
@@ -631,6 +746,65 @@ $('#deleteDepartmentModal').on('show.bs.modal', function (e) {
     $('#close-Department-unsuccess').on('click', function () {
       $('#unsuccessfulDeletionModal').modal('hide');
     });
-    return false; // Prevent the default form submit action
+    return false;
+  });
+});
+// delete location
+
+$('#deleteLocationModal').on('show.bs.modal', function (e) {
+  $.ajax({
+    url: './libs/php/getLocationById.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      id: $(e.relatedTarget).attr('data-id'), // Retrieves the data-id attribute from the calling button
+    },
+    success: function (result) {
+      if (result.status.code == 200) {
+        // Update the hidden input with the employee id so that
+
+        console.log(result);
+        // Access department information
+        $('#locationID').val(result.data.id);
+        $('#locationDeleteName').val(result.data.name);
+      }
+    },
+  });
+
+  $('#deleteLocationBtn').on('click', function () {
+    $('#deleteLocationModal').modal('hide');
+    $('#locationDeleteConfirmation').modal('show');
+  });
+
+  $('#locationConfirmDelete').on('click', function () {
+    var locationID = $(e.relatedTarget).attr('data-id');
+    $.ajax({
+      url: './libs/php/deleteLocationByID.php', // URL to your delete script
+      type: 'POST',
+      data: { id: locationID },
+      success: function (result) {
+        if (result.status.code === '200') {
+          // Check for a successful status code
+          $('#locationDeleteConfirmation').modal('hide');
+          $('#successLocationDeletion').modal('show');
+        } else {
+          $('#locationDeleteConfirmation').modal('hide');
+          $('#unsuccessfulLocationDeletionModal').modal('show');
+          // Handle errors, show messages to users
+        }
+      },
+      error: function (xhr, status, error) {
+        alert('AJAX error: ' + status + ', ' + error);
+        // Handle AJAX errors
+      },
+    });
+    $('#close-Location-unsuccess').on('click', function () {
+      $('#unsuccessfulLocationDeletionModal').modal('hide');
+    });
+    $('#successLocationButton').on('click', function () {
+      $('#successLocationDeletion').modal('hide');
+    });
+
+    return false;
   });
 });
