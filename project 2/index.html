@@ -194,6 +194,66 @@
         <p class="fw-light my-3">Company Directory version 1.0</p>
       </footer>
     </section>
+    <!-- filter modal -->
+    <div
+      class="modal fade"
+      id="filterModal"
+      tabindex="-1"
+      aria-labelledby="filterModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-3d">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="filterModalLabel">Employee Filter</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Filter by Department -->
+
+            <div class="form-group">
+              <label class="mb-2" for="filterDepartmentSelect"
+                >Department</label
+              >
+              <select
+                class="form-control mb-2"
+                id="filterDepartmentSelect"
+                placeholder="All Departments"
+              ></select>
+            </div>
+            <!-- Filter by Location -->
+            <div class="form-group">
+              <label class="mb-2" for="filterLocationSelect">Location</label>
+              <select
+                class="form-control mb-2"
+                id="filterLocationSelect"
+                placeholder="All Locations"
+              ></select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              id="closeFilterModal"
+              class="btn btn-secondary"
+            >
+              Close
+            </button>
+            <button type="button" id="applyFilterBtn" class="btn btn-primary">
+              Apply Filter
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- All Employee Modals  -->
     <!-- create employee section -->
     <!-- create New Employee modal -->
@@ -213,7 +273,7 @@
         class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
       >
         <div class="modal-content shadow">
-          <div class="modal-header bg-success bg-gradient text-white">
+          <div class="modal-header bg-primary bg-gradient text-white">
             <h5 class="modal-title">Create New Employee</h5>
             <button
               type="button"
@@ -304,27 +364,30 @@
       </div>
     </div>
     <!-- create employee Confirmation Modal -->
+
     <div
-      class="modal fade"
       id="createConfirmationModal"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="confirmationModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="confirmationModalLabel">Confirm</h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-primary bg-gradient text-white">
+            <h5 class="modal-title">Confirmation</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">
             Are you sure you want to create this employee?
           </div>
@@ -337,7 +400,7 @@
             >
               Cancel
             </button>
-            <button type="button" class="btn btn-success" id="confirmCreate">
+            <button type="button" class="btn btn-primary" id="confirmCreate">
               Confirm
             </button>
           </div>
@@ -345,27 +408,30 @@
       </div>
     </div>
     <!--create employee success modal -->
+
     <div
-      class="modal fade"
       id="EmployeeCreatedModal"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="successModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="successModalLabel">Success</h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-success bg-gradient text-white">
+            <h5 class="modal-title">success</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">The user has been Created successfully.</div>
           <div class="modal-footer">
             <button
@@ -380,7 +446,6 @@
         </div>
       </div>
     </div>
-
     <!--update employee section  -->
     <!-- update modal -->
 
@@ -393,14 +458,11 @@
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <!--   the last two classes centre the modal and, if the content is too long, ensures  -->
-      <!--   that the header and footer are always on display by making the body scroll -->
-
       <div
         class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
       >
         <div class="modal-content shadow">
-          <div class="modal-header bg-primary bg-gradient text-white">
+          <div class="modal-header bg-success bg-gradient text-white">
             <h5 class="modal-title">Edit employee</h5>
             <button
               type="button"
@@ -488,6 +550,87 @@
         </div>
       </div>
     </div>
+    <!-- update confimation modal -->
+    <div
+      id="employeeUpdateConfirm"
+      class="modal fade"
+      tabindex="-1"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-success bg-gradient text-white">
+            <h5 class="modal-title">Confirmation</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <p id="employeeEditMessage">
+              Are you sure you want to apply changes for .
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              data-dismiss="modal"
+              id="employeeUpdateConfirmBtn"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- update confirmed -->
+    <div
+      id="employeeUpdateSuccess"
+      class="modal fade"
+      tabindex="-1"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-success bg-gradient text-white">
+            <h5 class="modal-title">success</h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">The user has been updated successfully.</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-success"
+              data-dismiss="modal"
+              id="employeeUpdateSuccessBtn"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- delete employee section  -->
     <!-- delete personnel -->
     <div
@@ -514,67 +657,10 @@
           </div>
 
           <div class="modal-body">
-            <form id="infoPersonnelForm">
-              <input type="hidden" id="infoPersonnelEmployeeID" />
-
-              <div class="form-floating mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="infoPersonnelFirstName"
-                  placeholder="First name"
-                  required
-                  readonly
-                />
-                <label for="infoPersonnelFirstName">First name</label>
-              </div>
-
-              <div class="form-floating mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="infoPersonnelLastName"
-                  placeholder="Last name"
-                  required
-                  readonly
-                />
-                <label for="infoPersonnelLastName">Last name</label>
-              </div>
-
-              <div class="form-floating mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  id="infoPersonnelJobTitle"
-                  placeholder="Job title"
-                  required
-                  readonly
-                />
-                <label for="infoPersonnelJobTitle">Job Title</label>
-              </div>
-
-              <div class="form-floating mb-3">
-                <input
-                  type="email"
-                  class="form-control"
-                  id="infoPersonnelEmailAddress"
-                  placeholder="Email address"
-                  required
-                  readonly
-                />
-                <label for="infoPersonnelEmailAddress">Email Address</label>
-              </div>
-
-              <div class="form-floating">
-                <select
-                  class="form-select"
-                  id="infoPersonnelDepartment"
-                  placeholder="Department"
-                  readonly
-                ></select>
-                <label for="infoPersonnelDepartment">Department</label>
-              </div>
-            </form>
+            <input type="hidden" id="infoPersonnelEmployeeID" />
+            <p id="deletePersonnelMessage">
+              Are you sure you want to delete this employee?
+            </p>
           </div>
 
           <div class="modal-footer">
@@ -597,78 +683,38 @@
         </div>
       </div>
     </div>
-    <!-- delete employee Confirmation Modal -->
-    <div
-      class="modal fade"
-      id="confirmationModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="confirmationModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="confirmationModalLabel">
-              Confirm Deletion
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            Are you sure you want to delete this employee?
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-              id="cancelButton"
-            >
-              Cancel
-            </button>
-            <button type="button" class="btn btn-danger" id="confirmDelete">
-              Confirm
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+
     <!--delete employee success modal -->
     <div
-      class="modal fade"
       id="successModal"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="successModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="successModalLabel">Success</h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-danger bg-gradient text-white">
+            <h5 class="modal-title">success</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">The user has been deleted successfully.</div>
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-primary"
+              class="btn btn-danger"
               data-dismiss="modal"
-              id="successOkButton"
+              id="userDeleteSuccess"
             >
               OK
             </button>
@@ -695,7 +741,7 @@
         class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
       >
         <div class="modal-content shadow">
-          <div class="modal-header bg-success bg-gradient text-white">
+          <div class="modal-header bg-primary bg-gradient text-white">
             <h5 class="modal-title">Create New Department</h5>
             <button
               type="button"
@@ -750,28 +796,31 @@
         </div>
       </div>
     </div>
+
     <!-- Confirmation Modal -->
     <div
-      class="modal fade"
       id="createDepartmentConfirmModal"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="confirmationModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="confirmationModalLabel">Confirm</h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-primary bg-gradient text-white">
+            <h5 class="modal-title">Confirmation</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div id="modal-body" class="modal-body">
             Are you sure you want to create this Department?
           </div>
@@ -784,7 +833,7 @@
             >
               Cancel
             </button>
-            <button type="button" class="btn btn-success" id="confirmCreate">
+            <button type="button" class="btn btn-primary" id="confirmCreate">
               Confirm
             </button>
           </div>
@@ -792,27 +841,30 @@
       </div>
     </div>
     <!-- success modal -->
+
     <div
-      class="modal fade"
       id="departmentCreatedModal"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="successModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="successModalLabel">Success</h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-success bg-gradient text-white">
+            <h5 class="modal-title">success</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">
             The Department has been Created successfully.
           </div>
@@ -846,7 +898,7 @@
         class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
       >
         <div class="modal-content shadow">
-          <div class="modal-header bg-primary bg-gradient text-white">
+          <div class="modal-header bg-success bg-gradient text-white">
             <h5 class="modal-title">Edit Department</h5>
             <button
               type="button"
@@ -902,31 +954,34 @@
       </div>
     </div>
     <!-- update department confirmation Modal -->
+
     <div
-      class="modal fade"
       id="updateDepartmentConfirmation"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="confirmationModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="confirmationModalLabel">
-              Confirm Update
-            </h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-success bg-gradient text-white">
+            <h5 class="modal-title">Confirmation</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">
-            Are you sure you want to Update this department?
+            <p id="updateDepartmentparagraph">
+              Are you sure you want to Update this department?
+            </p>
           </div>
           <div class="modal-footer">
             <button
@@ -939,7 +994,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-danger"
+              class="btn btn-success"
               id="departmentConfirmDelete"
             >
               Confirm
@@ -949,34 +1004,37 @@
       </div>
     </div>
     <!-- update department success modal -->
+
     <div
-      class="modal fade"
       id="successDepartmentUpdate"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="successModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="successModalLabel">Success</h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-success bg-gradient text-white">
+            <h5 class="modal-title">success</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">
             The department has been updated successfully.
           </div>
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-primary"
+              class="btn btn-success"
               data-dismiss="modal"
               id="successDepartmentUpdate"
             >
@@ -1059,31 +1117,34 @@
       </div>
     </div>
     <!-- delete department Confirmation Modal -->
+
     <div
-      class="modal fade"
       id="DepartmentDeleteConfirmation"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="confirmationModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="confirmationModalLabel">
-              Confirm Deletion
-            </h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-danger bg-gradient text-white">
+            <h5 class="modal-title">Confirm Deletion</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">
-            Are you sure you want to delete this department?
+            <p id="depertmantDeleteConfirmTxt">
+              Are you sure you want to delete this department?
+            </p>
           </div>
           <div class="modal-footer">
             <button
@@ -1097,7 +1158,7 @@
             <button
               type="button"
               class="btn btn-danger"
-              id="departmentConfirmDelete"
+              id="confirmDeleteForDepartment"
             >
               Confirm
             </button>
@@ -1106,27 +1167,30 @@
       </div>
     </div>
     <!-- delete department success modal -->
+
     <div
-      class="modal fade"
       id="successDepartmentDeletion"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="successModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="successModalLabel">Success</h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-danger bg-gradient text-white">
+            <h5 class="modal-title">success</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">
             The department has been deleted successfully.
           </div>
@@ -1135,7 +1199,7 @@
               type="button"
               class="btn btn-primary"
               data-dismiss="modal"
-              id="successOkButton"
+              id="departmentDeleteSuccess"
             >
               OK
             </button>
@@ -1144,29 +1208,35 @@
       </div>
     </div>
     <!-- delete department unsuccessful modal -->
+
     <div
-      class="modal fade"
       id="unsuccessfulDeletionModal"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="successModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalLabel">Deletion Unsuccessful</h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-danger bg-gradient text-white">
+            <h5 class="modal-title">Deletion Unsuccessful</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">
-            The department cannot be deleted as it is currently in use.
+            <p id="departmentDeleteUnsuccessful">
+              depernamt(name) cannot be deleted because it is associated with 5
+              personnel.
+            </p>
           </div>
           <div class="modal-footer">
             <button
@@ -1199,7 +1269,7 @@
         class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
       >
         <div class="modal-content shadow">
-          <div class="modal-header bg-success bg-gradient text-white">
+          <div class="modal-header bg-primary bg-gradient text-white">
             <h5 class="modal-title">Create New Location</h5>
             <button
               type="button"
@@ -1246,27 +1316,30 @@
       </div>
     </div>
     <!-- create location Confirmation Modal -->
+
     <div
-      class="modal fade"
       id="createLocationConfirmModal"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="confirmationModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="confirmationModalLabel">Confirm</h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-primary bg-gradient text-white">
+            <h5 class="modal-title">Confirmation</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div id="modal-body" class="modal-body">
             Are you sure you want to create this Location?
           </div>
@@ -1291,27 +1364,30 @@
       </div>
     </div>
     <!--  create location success modal -->
+
     <div
-      class="modal fade"
       id="locationCreatedModal"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="successModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="successModalLabel">Success</h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-success bg-gradient text-white">
+            <h5 class="modal-title">success</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">
             The Location has been Created successfully.
           </div>
@@ -1346,7 +1422,7 @@
         class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
       >
         <div class="modal-content shadow">
-          <div class="modal-header bg-primary bg-gradient text-white">
+          <div class="modal-header bg-success bg-gradient text-white">
             <h5 class="modal-title">Edit Location</h5>
             <button
               type="button"
@@ -1393,31 +1469,34 @@
       </div>
     </div>
     <!-- update Location confirmation Modal -->
+
     <div
-      class="modal fade"
       id="updateLocationConfirmation"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="confirmationModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="confirmationModalLabel">
-              Confirm Update
-            </h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-success bg-gradient text-white">
+            <h5 class="modal-title">Confirmation</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">
-            Are you sure you want to Update this Location?
+            <p id="updateLocationConfirmTxt">
+              Are you sure you want to Update this Location?
+            </p>
           </div>
           <div class="modal-footer">
             <button
@@ -1440,27 +1519,30 @@
       </div>
     </div>
     <!-- update Location success modal -->
+
     <div
-      class="modal fade"
       id="successLocationUpdate"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="successModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="successModalLabel">Success</h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-success bg-gradient text-white">
+            <h5 class="modal-title">success</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">
             The location has been updated successfully.
           </div>
@@ -1541,30 +1623,32 @@
     </div>
     <!-- delete Location Confirmation Modal -->
     <div
-      class="modal fade"
       id="locationDeleteConfirmation"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="confirmationModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="confirmationModalLabel">
-              Confirm Deletion
-            </h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-danger bg-gradient text-white">
+            <h5 class="modal-title">Confirm Deletion</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">
-            Are you sure you want to delete this Location?
+            <p id="deleteLocationConfirm">
+              Are you sure you want to delete this Location?
+            </p>
           </div>
           <div class="modal-footer">
             <button
@@ -1587,29 +1671,32 @@
       </div>
     </div>
     <!-- delete Location success modal -->
+
     <div
-      class="modal fade"
       id="successLocationDeletion"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="successModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="successModalLabel">Success</h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-danger bg-gradient text-white">
+            <h5 class="modal-title">success</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">
-            The department has been Location successfully.
+            The location has been deleted successfully.
           </div>
           <div class="modal-footer">
             <button
@@ -1626,28 +1713,32 @@
     </div>
     <!-- delete Location unsuccessful modal -->
     <div
-      class="modal fade"
       id="unsuccessfulLocationDeletionModal"
+      class="modal fade"
       tabindex="-1"
-      role="dialog"
-      aria-labelledby="successModalLabel"
+      data-bs-backdrop="false"
+      data-bs-keyboard="false"
+      aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered mb-5" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalLabel">Deletion Unsuccessful</h5>
+      <div
+        class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content shadow">
+          <div class="modal-header bg-danger bg-gradient text-white">
+            <h5 class="modal-title">Deletion Unsuccessful</h5>
             <button
               type="button"
-              class="close"
-              data-dismiss="modal"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
               aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            ></button>
           </div>
+
           <div class="modal-body">
-            The Location cannot be deleted as it is currently in use.
+            <p id="locationDeleteUnsuccess">
+              The Location cannot be deleted as it is currently in use.
+            </p>
           </div>
           <div class="modal-footer">
             <button
