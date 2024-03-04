@@ -23,14 +23,16 @@ $locationId = $_REQUEST['id'];
 $output = ['data' => []];
 
 // Check if the location is being used by any departments
-$departmentCheckQuery = $conn->prepare('SELECT COUNT(*) AS department_count FROM department WHERE locationID = ?');
+$departmentCheckQuery = $conn->prepare('SELECT COUNT(id) AS department_count FROM department WHERE locationID = ?');
+
 $departmentCheckQuery->bind_param("i", $locationId);
 $departmentCheckQuery->execute();
 $departmentCheckResult = $departmentCheckQuery->get_result();
 $departmentCount = $departmentCheckResult->fetch_assoc()['department_count'];
 
 // Check if the location is being used by any employees through their departments
-$employeeCheckQuery = $conn->prepare('SELECT COUNT(*) AS employee_count FROM personnel JOIN department ON personnel.departmentID = department.id WHERE department.locationID = ?');
+$employeeCheckQuery = $conn->prepare('SELECT COUNT(personnel.id) AS employee_count FROM personnel JOIN department ON personnel.departmentID = department.id WHERE department.locationID = ?');
+
 $employeeCheckQuery->bind_param("i", $locationId);
 $employeeCheckQuery->execute();
 $employeeCheckResult = $employeeCheckQuery->get_result();

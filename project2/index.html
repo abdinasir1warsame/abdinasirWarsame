@@ -942,28 +942,12 @@
 
           <div class="modal-body">
             <input type="hidden" id="infoPersonnelEmployeeID" />
-            <p id="depertmantDeleteConfirmTxt">
+            <p id="departmentDeleteConfirmTxt">
               Are you sure you want to delete this employee?
             </p>
           </div>
 
-          <div class="modal-footer">
-            <button
-              type="button"
-              id="confirmDeleteForDepartment"
-              class="btn btn-outline-secondary btn-sm myBtn"
-              data-bs-dismiss="modal"
-            >
-              YES
-            </button>
-            <button
-              type="button"
-              class="btn btn-outline-secondary btn-sm myBtn"
-              data-bs-dismiss="modal"
-            >
-              NO
-            </button>
-          </div>
+          <div id="deleteDepartmentFooter" class="modal-footer"></div>
         </div>
       </div>
     </div>
@@ -1292,7 +1276,7 @@
 
         <div class="modal-content shadow">
           <div class="modal-header bg-primary bg-gradient text-white">
-            <h5 class="modal-title">Remove Location entry?</h5>
+            <h5 id="deleteLocationTitle" class="modal-title"></h5>
             <button
               type="button"
               class="btn-close btn-close-white"
@@ -1308,23 +1292,7 @@
             </p>
           </div>
 
-          <div class="modal-footer">
-            <button
-              type="button"
-              id="locationConfirmDelete"
-              class="btn btn-outline-secondary btn-sm myBtn"
-              data-bs-dismiss="modal"
-            >
-              YES
-            </button>
-            <button
-              type="button"
-              class="btn btn-outline-secondary btn-sm myBtn"
-              data-bs-dismiss="modal"
-            >
-              NO
-            </button>
-          </div>
+          <div id="deleteLocationFooter" class="modal-footer"></div>
         </div>
       </div>
     </div>

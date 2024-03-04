@@ -20,7 +20,8 @@ if (mysqli_connect_errno()) {
 $departmentId = $_REQUEST['id'];
 
 // Check if the department is being used by any employees
-$employeeCheckQuery = $conn->prepare('SELECT COUNT(*) AS employee_count FROM personnel WHERE departmentID = ?');
+$employeeCheckQuery = $conn->prepare('SELECT COUNT(id) AS employee_count FROM personnel WHERE departmentID = ?');
+
 $employeeCheckQuery->bind_param("i", $departmentId);
 $employeeCheckQuery->execute();
 $employeeCheckResult = $employeeCheckQuery->get_result();
