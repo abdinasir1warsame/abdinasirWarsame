@@ -57,4 +57,4 @@ Gazzeteer offers the following functionalities:
 
 ## Deployment
 
-Gazzeteer is deployed and accessible at [Gazzeteer Website](#) (insert your deployed URL here).
+-deployed url:[https://abdinasir-warsame.shop/project1/]
